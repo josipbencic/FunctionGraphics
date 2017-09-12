@@ -9,6 +9,14 @@
 
 #include "Mesh.h"
 
+inline void getGLerror() {
+  auto x = glGetError();
+  if (x) {
+    std::cout << x << std::endl;
+    return;
+  }
+}
+
 /*  Physical representation of some mesh
     memset to clear.
 */
@@ -27,8 +35,8 @@ public:
     objectColor = glm::vec3(0.73f, 0.37f, 0.43f);
     scale = glm::vec3(1.0f);
     rotation = glm::quat();
-    position = glm::vec3(1.0f);
-    velocity = glm:: vec3(1.0f);
+    position = glm::vec3(0.0f);
+    velocity = glm:: vec3(0.0f);
   }
 
   Body(const Body<__Collision>& Src)
@@ -42,48 +50,36 @@ public:
     velocity = Src.velocity;
   }
 
-  inline void Render(GLuint shader, glm::mat4 view, glm::mat4 projection, glm::vec3 lightColor, std::vector<GLuint> Ids) {
+  inline void setupRender()
+  {
+    glBindVertexArray(Mesh::VertexArrayID);
+
+    glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+    glVertexAttribPointer(
+      0,                  // index in layout in shader
+      3,                  // size
+      GL_FLOAT,           // type
+      GL_FALSE,           // normalized?
+      0,                  // stride
+      (void*)0            // array buffer offset
+    );
+    glEnableVertexAttribArray(0);
+  }
+
+  inline void Render(
+    GLuint shader, glm::mat4 view, glm::mat4 projection, std::vector<GLuint> Ids) {
     glUseProgram(shader);
 
     auto model = ComputeModelMatrix();
     glUniformMatrix4fv( Ids[0], 1, GL_FALSE, &model[0][0]);
     glUniformMatrix4fv( Ids[1], 1, GL_FALSE, &view[0][0]);
     glUniformMatrix4fv( Ids[2], 1, GL_FALSE, &projection[0][0]);
-    if (Ids[3]) glUniform3fv(Ids[3], 1, &objectColor[0]);
-    if (Ids[4]) glUniform3fv(Ids[4], 1, &lightColor[0]);
+    glUniform3fv(Ids[3], 1, &objectColor[0]);
 
-    glEnableVertexAttribArray(0);
-    glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-    if (!Ids[3]) {
-      glVertexAttribPointer(
-        0,                  // index in layout in shader
-        3,                  // size
-        GL_FLOAT,           // type
-        GL_FALSE,           // normalized?
-        6 * sizeof(float),  // stride
-        (void*)0            // array buffer offset
-      );
-    }
-    else if (Ids[3] > 0) {
-      glVertexAttribPointer(
-        0,                  // index in layout in shader
-        3,                  // size
-        GL_FLOAT,           // type
-        GL_FALSE,           // normalized?
-        6 * sizeof(float),  // stride
-        (void*)0
-      );
-      glVertexAttribPointer(
-        1,
-        3,
-        GL_FLOAT,
-        GL_FALSE,
-        6 * sizeof(float),
-        (void*) (3 * sizeof(float))
-      );
-    }
-    glDrawArrays(GL_TRIANGLES, 0, verticesNum/2);
-    glDisableVertexAttribArray(0);
+    glBindVertexArray(Mesh::VertexArrayID);
+
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    glDrawArrays(GL_TRIANGLES, 0, (GLsizei) verticesNum);
   }
 
   inline void Paint(glm::vec3 color) { objectColor = color; }

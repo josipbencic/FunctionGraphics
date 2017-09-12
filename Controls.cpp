@@ -20,14 +20,14 @@ glm::mat4 getProjectionMatrix() {
 }
 
 
-// Initial position : on +Z
-glm::vec3 position = glm::vec3(0, 0, 5);
+// Initial position : on +Y
+glm::vec3 position = glm::vec3(0, 5, 5);
 // Initial horizontal angle : toward -Z
 float horizontalAngle = 3.14f;
 // Initial vertical angle : none
-float verticalAngle = 0.0f;
+float verticalAngle = -3.14f/3.f;
 // Initial Field of View
-float initialFoV = 45.0f;
+float initialFoV = 70.0f;
 
 float speed = 5.0f; // 3 units / second
 float mouseSpeed = 0.005f;
