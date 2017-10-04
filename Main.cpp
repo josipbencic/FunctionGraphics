@@ -47,47 +47,51 @@ int main(int, char**) {
   glEnable(GL_POINT_SPRITE);
   glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
 
-
-  func::Poly p{ {1.0f, 1.0f, 1.0f, 5.0f} };
-
-  func::PointContainer funcMesh(func::CreatePoints<func::Poly>(100, p));
-  func::SimpleRenderer r(funcMesh);
-
-  r.Paint(vec3(0.0f, 0.2f, 0.0f));
-  //r.Translate(vec3(0.0f, 1.2f, 0.0f));
-  r.Scale(vec3(1.0f, 1.0f, 1.0f));
-  r.setupRender();
-
-  //auto model = r.ComputeModelMatrix();
-  //glm::mat4 view = getViewMatrix();
-  //glm::mat4 projection = getProjectionMatrix();
-  //cout << "Points to draw are:\n";
-  //for (int i = 0; i < v.size(); i++) {
-  //  auto res = projection * view * model * vec4(v[i], 1);
-  //  cout << res.x << " " << res.y << " " << res.z << endl;
-  //}
-
+  //  setup floor
   auto cubePoints = CubePoints();
   auto cubeMesh = Mesh(cubePoints);
   auto floor = Body<NoCollision>(cubeMesh);
-  floor.Scale(vec3(10.0f, 2.0f, 10.0f));
+
+  floor.Scale(vec3(10.0f, 1.0f, 10.0f));
   floor.setupRender();
 
 
+
+
+  //  ========== 
+
+
+
+
+  func::Poly p{ { 0.25f, -1.0f, 1.0f } };
+
+  func::PointContainer funcMesh(func::CreatePoints<func::Poly>(5, p));
+  func::SimpleRenderer<func::FunctionInputReaction> r(funcMesh);
+
+  r.Paint(vec3(0.0f, 0.2f, 0.0f));
+  r.setupRender();
+
+  cout << r.position << endl;
+  cout << r.rotation << endl;
+  cout << r.scale << endl;
+
+  auto m = r.ComputeModelMatrix();
+
   SDL_Event e;
+  int frame = 0;
   do {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     computeMatricesFromInputs(sdl.mainwindow);
+
     glm::mat4 view = getViewMatrix();
     glm::mat4 projection = getProjectionMatrix();
 
     floor.Render(programID, view, projection, vector<GLuint>{
       modelMatrixID,
-        viewMatrixID,
-        projectionMatrixID,
-        objectColorID
+      viewMatrixID,
+      projectionMatrixID,
+      objectColorID
     });
-
 
     r.Render(programID, view, projection,
       modelMatrixID,
@@ -96,15 +100,18 @@ int main(int, char**) {
       objectColorID
     );
 
-
-
-
-
-
+    r.ReactOnInput(e);
 
     SDL_GL_SwapWindow(sdl.mainwindow);
     SDL_PollEvent(&e);
-  } while ( e.type != SDL_QUIT );
+
+    ++frame;
+    if (frame % 2048 == 0) {
+      for (int i = 0; i < funcMesh.data.size(); i++)
+        cout << (m * vec4(funcMesh.data[i], 1.0f)) << endl;
+    }
+
+  } while (e.type != SDL_QUIT && !(e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE ));
 
   Mesh::clearVAO();
   func::PointContainer::clearVAO();

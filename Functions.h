@@ -10,6 +10,7 @@
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+#include "Initers.h"
 #include "Mesh.h"
 
 namespace func {
@@ -54,6 +55,48 @@ namespace func {
   }
 
 
+  struct FunctionInputReaction {
+
+    inline void operator() (SDL_Event& e, glm::vec3& scale) {
+      auto tmp = scale;
+
+      const Uint8* keys = SDL_GetKeyboardState(NULL);
+
+      if (e.type == SDL_KEYUP) {
+        //  on right up, set y to be changed
+        if (e.key.keysym.scancode == SDL_Scancode::SDL_SCANCODE_RIGHT && !keys[SDL_SCANCODE_RIGHT]) {
+          index = 0;
+          //std::cout << "Changed active axis to: " << name[index] << std::endl;
+        }
+        //  on left up, set x to be changed
+        else if (e.key.keysym.scancode == SDL_Scancode::SDL_SCANCODE_LEFT && !keys[SDL_SCANCODE_LEFT]) {
+          index = 1;
+          //std::cout << "Changed active axis to: " << name[index] << std::endl;
+        }
+      }
+
+      static const float delta = 0.03f;
+      //  decrease
+      if (keys[SDL_SCANCODE_UP]) {
+        tmp[index] += delta;
+      }
+      //  increase
+      if (keys[SDL_SCANCODE_DOWN]) {
+        tmp[index] -= delta;
+      }
+
+      if (scale != tmp) {
+        scale = tmp;
+        std::cout << "Changed scale: " << scale << std::endl;
+      }
+    }
+
+    int index = 0; // can be 0, 1, 2 -> x, y, z
+    const std::string name[3] = { "x", "y", "z" };
+  };
+
+
+
   struct PointContainer
   {
     std::vector<glm::vec3> data;
@@ -90,11 +133,14 @@ namespace func {
       glBindVertexArray(VertexArrayID);
       glDeleteBuffers(1, &vertexBuffer);
     }
-
   };
 
   GLuint PointContainer::VertexArrayID = 777;
 
+
+
+
+  template <typename InputReaction>
   struct SimpleRenderer
   {
     glm::vec3             scale;
@@ -105,11 +151,15 @@ namespace func {
     size_t                verticesNum;
     glm::vec3             objectColor;
 
+    InputReaction         reactOnInput;
+
+
     SimpleRenderer(PointContainer& points)
     {
       vertexBuffer = points.vertexBuffer;
       verticesNum = points.data.size();
-      rotation = glm::quat(1.0f, -1.0f, 0.0f, 1.0f);
+      glm::vec3 eulerAngles = glm::vec3(0.0f, 0.0f, 0.0f);
+      rotation = glm::quat(eulerAngles);
       position = glm::vec3(0.0f);
       objectColor = glm::vec3(0.73f, 0.37f, 0.43f);
       scale = glm::vec3(1.0f);
@@ -156,6 +206,9 @@ namespace func {
     }
 
     //  random accessors
+    inline void ReactOnInput(SDL_Event& e) {
+      reactOnInput(e, scale);
+    }
 
     inline void Paint(glm::vec3 color) { objectColor = color; }
 

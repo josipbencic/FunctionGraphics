@@ -9,11 +9,26 @@
 #include <SDL.h>
 #include <SDL_opengl.h>
 
+#include <iostream>
+
+#include <glm/vec3.hpp>
+#include <glm/gtc/quaternion.hpp>
 
 using u = unsigned long long;
 using fl = float;
 using vf = std::vector<fl>;
 #define pb push_back
+
+
+std::ostream& operator <<(std::ostream& stream, glm::vec3 out) {
+  stream << "(" << out.x << ", " << out.y << ", " << out.z << ")";
+  return stream;
+}
+
+std::ostream& operator <<(std::ostream& stream, glm::quat out) {
+  stream << "(" << out.x << ", " << out.y << ", " << out.z << ", " << out.w << ")";
+  return stream;
+}
 
 struct SDL_Initer {
 

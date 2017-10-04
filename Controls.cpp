@@ -79,19 +79,19 @@ void computeMatricesFromInputs(SDL_Window* window) {
 
 
   // Move forward
-  if (keys[SDL_SCANCODE_UP ]) {
+  if (keys[ SDL_SCANCODE_W ]) {
     position += direction * deltaTime * speed;
   }
   // Move backward
-  if (keys[ SDL_SCANCODE_DOWN ]) {
+  if (keys[ SDL_SCANCODE_S ]) {
     position -= direction * deltaTime * speed;
   }
   // Strafe right
-  if (keys[SDL_SCANCODE_RIGHT]) {
+  if (keys [ SDL_SCANCODE_D ]) {
     position += right * deltaTime * speed;
   }
   // Strafe left
-  if (keys[SDL_SCANCODE_LEFT]) {
+  if (keys[ SDL_SCANCODE_A ]) {
     position -= right * deltaTime * speed;
   }
 
