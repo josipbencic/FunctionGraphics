@@ -4,7 +4,7 @@
 #include <vector>
 #include <utility>
 
-#include <GL/glew.h>
+//#include <GL/glew.h>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
@@ -87,7 +87,7 @@ namespace func {
 
       if (scale != tmp) {
         scale = tmp;
-        std::cout << "Changed scale: " << scale << std::endl;
+       // std::cout << "Changed scale: " << scale << std::endl;
       }
     }
 
