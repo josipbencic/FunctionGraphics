@@ -19,13 +19,24 @@
 #include "Body.h"
 
 #include "Functions.h"
+using namespace std;
+using namespace glm;
+
+void setupOpenGL() {
+  //  setup opengl
+  glClearColor(0.2f, 0.2f, 0.7f, 0.0f);
+  glEnable(GL_DEPTH_TEST);
+  //glEnable(GL_CULL_FACE);
+  //glDepthFunc();
+  //glEnable(GL_PROGRAM_POINT_SIZE);
+  ///glEnable(GL_BLEND);
+  //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  //glEnable(GL_POINT_SPRITE);
+  //glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
+}
 
 int main(int, char**) {
-  using namespace std;
-  using namespace glm;
-  const int width = 1024;
-  const int height = 768;
-  SDL_Initer sdl("Raycaster", width, height);
+  SDL_Initer sdl("Raycaster", 1920, 1080);
   GL_Initer glinit;
 
 
@@ -36,17 +47,7 @@ int main(int, char**) {
   GLuint projectionMatrixID = glGetUniformLocation(programID, "projection");
   GLuint objectColorID =      glGetUniformLocation(programID, "objectColor");
 
-  //  setup opengl
-  glClearColor(0.2f, 0.2f, 0.7f, 0.0f);
-  glEnable(GL_DEPTH_TEST);
-  //glEnable(GL_CULL_FACE);
-  //glDepthFunc();
-  //glEnable(GL_PROGRAM_POINT_SIZE);
-  glEnable(GL_BLEND);
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  glEnable(GL_POINT_SPRITE);
-  glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
-
+  
   //  setup floor
   auto cubePoints = CubePoints();
   auto cubeMesh = Mesh(cubePoints);
@@ -54,9 +55,6 @@ int main(int, char**) {
 
   floor.Scale(vec3(10.0f, 1.0f, 10.0f));
   floor.setupRender();
-
-
-
 
   //  ========== 
 
