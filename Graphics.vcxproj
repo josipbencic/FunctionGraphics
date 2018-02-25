@@ -86,7 +86,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>C:\Lib\Libraries\SDL2-2.0.5\include;C:\Lib\Libraries\glm;C:\Lib\Libraries\glew-2.0.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -114,7 +114,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -132,6 +132,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Core\Display.cpp" />
+    <ClCompile Include="Core\Mesh.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -142,13 +143,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Body.h" />
-    <ClInclude Include="Collision.h" />
     <ClInclude Include="Core\Display.h" />
+    <ClInclude Include="Core\Mesh.h" />
     <ClInclude Include="Core\Platform.h" />
     <ClInclude Include="Functions.h" />
-    <ClInclude Include="Initers.h" />
-    <ClInclude Include="Mesh.h" />
-    <ClInclude Include="Shaders.h" />
+    <ClInclude Include="Shapes\Mainfold.h" />
+    <ClInclude Include="Shapes\Transformable.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

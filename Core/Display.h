@@ -13,18 +13,19 @@
 class Display {
 
   // Initial position : on +Y
-  const glm::vec3 startingPosition = glm::vec3(0, 5, 5);
+  const glm::vec3 startingPosition = glm::vec3(-10, 5, 0);
 
-  // Initial horizontal angle : toward -Z
-  float horizontalAngle = 3.14f;
-  // Initial vertical angle : none
-  float verticalAngle = -3.14f / 3.f;
   // Initial Field of View
-  float initialFoV = 70.0f;
+  static constexpr float initialFoV = 70.0f;
 
   // 5 units / second
-  float speed = 5.0f;
-  float mouseSpeed = 0.005f;
+  static constexpr float speed = 5.0f;
+  static constexpr float mouseSpeed = 0.005f;
+
+  // Initial horizontal angle
+  float horizontalAngle = -3.14f / 2.0f;
+  // Initial vertical angle
+  float verticalAngle = -3.14f / 6.0f;
 
   //  Current position
   glm::vec3 position = startingPosition;

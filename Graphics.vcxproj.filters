@@ -8,10 +8,16 @@
     <Filter Include="Core">
       <UniqueIdentifier>{01235d66-7d00-4247-9267-f0dba48daec2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shapes">
+      <UniqueIdentifier>{357775df-a7a0-4f0d-859f-ba2316cf3ef4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Core\Display.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Mesh.cpp">
       <Filter>Core</Filter>
     </ClCompile>
   </ItemGroup>
@@ -23,17 +29,20 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Body.h" />
-    <ClInclude Include="Collision.h" />
     <ClInclude Include="Functions.h" />
-    <ClInclude Include="Initers.h" />
     <ClInclude Include="Core\Display.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="Shaders.h">
+    <ClInclude Include="Core\Platform.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="Mesh.h" />
-    <ClInclude Include="Core\Platform.h">
+    <ClInclude Include="Shapes\Transformable.h">
+      <Filter>Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="Shapes\Mainfold.h">
+      <Filter>Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Mesh.h">
       <Filter>Core</Filter>
     </ClInclude>
   </ItemGroup>

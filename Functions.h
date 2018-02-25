@@ -4,13 +4,9 @@
 #include <vector>
 #include <utility>
 
-//#include <GL/glew.h>
-
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-
-#include "Mesh.h"
 
 namespace func {
 

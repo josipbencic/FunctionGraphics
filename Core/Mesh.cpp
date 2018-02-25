@@ -1,18 +1,102 @@
-#pragma once
+#include "Mesh.h"
 
 #include <iostream>
 #include <cstdlib>
 #include <ostream>
 #include <fstream>
 #include <string>
-#include <vector>
-
-#include <GL/glew.h>
 
 #include <SDL.h>
 #include <SDL_opengl.h>
 
-GLuint LoadShaders(const char* vertex_file_path, const char* fragment_file_path) {
+
+Mesh::Mesh() {
+  glGenVertexArrays(1, &VAOid);
+  glBindVertexArray(VAOid);
+
+  bMeshSpecified = false;
+}
+
+Mesh::Mesh(const std::vector<float>& data) {
+  glGenVertexArrays(1, &VAOid);
+  glBindVertexArray(VAOid);
+
+  AllocGPU(data);
+  numVertices = static_cast<GLsizei>(data.size());
+
+  bMeshSpecified = true;
+}
+
+Mesh::Shader::Shader() {
+  id = LoadShaders(Shader::vertexShader, Shader::fragmentShader);
+  modelID = glGetUniformLocation(id, "model");
+  viewID = glGetUniformLocation(id, "view");
+  projectionID = glGetUniformLocation(id, "projection");
+  colorID = glGetUniformLocation(id, "objectColor");
+}
+
+Mesh::Shader::~Shader() {
+  glDeleteProgram(id);
+}
+
+Mesh::~Mesh() {
+  if (bMeshSpecified) {
+    glBindVertexArray(VAOid);
+    glDeleteBuffers(1, &VBOid);
+  }
+
+  glBindVertexArray(VAOid);
+  glDeleteVertexArrays(1, &VAOid);
+}
+
+void Mesh::SpecifyVertices(std::vector<float>& data) {
+  if (bMeshSpecified) {
+    return;
+  }
+  AllocGPU(data);
+  numVertices = static_cast<GLsizei>(data.size());
+  bMeshSpecified = true;
+}
+
+void Mesh::BindRenderAttributes() {
+  glBindVertexArray(VAOid);
+
+  glBindBuffer(GL_ARRAY_BUFFER, VBOid);
+  glVertexAttribPointer(
+    0,                  // index in layout in shader
+    3,                  // size
+    GL_FLOAT,           // type
+    GL_FALSE,           // normalized?
+    0,                  // stride
+    (void*)0            // array buffer offset
+  );
+  glEnableVertexAttribArray(0);
+}
+
+void Mesh::Render(
+  glm::mat4 model, glm::mat4 view, glm::mat4 projection) {
+
+  glUseProgram(shader.id);
+  glUniformMatrix4fv(shader.modelID, 1, GL_FALSE, &model[0][0]);
+  glUniformMatrix4fv(shader.viewID, 1, GL_FALSE, &view[0][0]);
+  glUniformMatrix4fv(shader.projectionID, 1, GL_FALSE, &projection[0][0]);
+  glUniform3fv(shader.colorID, 1, &color[0]);
+
+  // glBindVertexArray(VAOid); // only call if there are multiple VAOs
+
+  glDrawArrays(GL_TRIANGLES, 0, (GLsizei)numVertices);
+}
+
+void Mesh::AllocGPU(const std::vector<float>& mesh) {
+  glBindVertexArray(VAOid);
+  glGenBuffers(1, &VBOid);
+  glBindBuffer(GL_ARRAY_BUFFER, VBOid);
+  glBufferData(GL_ARRAY_BUFFER, mesh.size() * sizeof(float), mesh.data(), GL_STATIC_DRAW);
+}
+
+GLuint Mesh::Shader::LoadShaders(
+  const char* vertex_file_path,
+  const char* fragment_file_path) {
 
   // Create the shaders
   GLuint VertexShaderID = glCreateShader(GL_VERTEX_SHADER);
@@ -62,8 +146,6 @@ GLuint LoadShaders(const char* vertex_file_path, const char* fragment_file_path)
     printf("%s\n", &VertexShaderErrorMessage[0]);
   }
 
-
-
   // Compile Fragment Shader
   printf("Compiling shader : %s\n", fragment_file_path);
   char const * FragmentSourcePointer = FragmentShaderCode.c_str();
@@ -78,7 +160,6 @@ GLuint LoadShaders(const char* vertex_file_path, const char* fragment_file_path)
     glGetShaderInfoLog(FragmentShaderID, InfoLogLength, NULL, &FragmentShaderErrorMessage[0]);
     printf("%s\n", &FragmentShaderErrorMessage[0]);
   }
-
 
 
   // Link the program
