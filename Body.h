@@ -20,7 +20,7 @@ class Body : public Transformable {
 
 public:
   Body(const std::vector<float>& data)
-    , mesh(data) { }
+    : mesh(data) { }
 
   void Precompute() {
     mesh.BindRenderAttributes();
