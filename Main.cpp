@@ -1,3 +1,7 @@
+#include "./Core/Platform.h"
+
+#if WINDOW_APP > 0
+
 
 #include <iostream>
 #include <cstdlib>
@@ -16,10 +20,13 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "./Core/Display.h"
+#include "./Shapes/Manifold.h"
+#include "./Math/Math.h"
 
 #include "Body.h"
-
 #include "Functions.h"
+
+
 using namespace std;
 using namespace glm;
 
@@ -39,9 +46,10 @@ void setGLVariables() {
 int main(int, char**) {
   Display display("Graphics");
 
-  Body floor(CubePoints());
-  floor.Precompute();
-  floor.Scale(vec3(10.0f, 1.0f, 10.0f));
+
+  Surface<Sphere> S{ Sphere(), vec2(0.0), vec2(2 * 3.1415, 2 * 3.1415) };
+  S.Scale(3.0f);
+  S.Precompute();
 
   do {
     display.BeginFrame();
@@ -49,11 +57,10 @@ int main(int, char**) {
     mat4 view = display.View();
     mat4 projection = display.Projection();
 
-    floor.Render(view, projection);
+    S.Render(view, projection);
 
   } while (display.FinishFrame());
 
   return 0;
 }
-
-
+#endif

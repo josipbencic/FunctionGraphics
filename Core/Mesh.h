@@ -70,7 +70,7 @@ public:
   const Mesh& operator =(const Mesh&&) = delete;
 
   /*  Used to specify data if it wasn't originially supplied. */
-  void SpecifyVertices(std::vector<float>& data);
+  void SpecifyVertices(const std::vector<float>& data);
 
   /*  Sets VAO attributes before render. */
   void BindRenderAttributes();

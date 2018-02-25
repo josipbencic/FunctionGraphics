@@ -134,6 +134,8 @@
     <ClCompile Include="Core\Display.cpp" />
     <ClCompile Include="Core\Mesh.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Math\MathPlayground.cpp" />
+    <ClCompile Include="Shapes\Manifold.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleFragmentShader.fragmentshader" />
@@ -147,7 +149,8 @@
     <ClInclude Include="Core\Mesh.h" />
     <ClInclude Include="Core\Platform.h" />
     <ClInclude Include="Functions.h" />
-    <ClInclude Include="Shapes\Mainfold.h" />
+    <ClInclude Include="Math\Math.h" />
+    <ClInclude Include="Shapes\Manifold.h" />
     <ClInclude Include="Shapes\Transformable.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

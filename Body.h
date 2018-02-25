@@ -1,8 +1,6 @@
 #ifndef INCLUDED_BODY_H
 #define INCLUDED_BODY_H
 
-#include <GL/glew.h>
-
 #include <vector>
 #include <glm/glm.hpp>
 

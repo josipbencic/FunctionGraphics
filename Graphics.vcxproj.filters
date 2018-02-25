@@ -11,6 +11,9 @@
     <Filter Include="Shapes">
       <UniqueIdentifier>{357775df-a7a0-4f0d-859f-ba2316cf3ef4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Math">
+      <UniqueIdentifier>{d3f28f5b-0e65-43f3-86e7-1c121c679cad}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
@@ -19,6 +22,12 @@
     </ClCompile>
     <ClCompile Include="Core\Mesh.cpp">
       <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Shapes\Manifold.cpp">
+      <Filter>Shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\MathPlayground.cpp">
+      <Filter>Math</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -39,11 +48,14 @@
     <ClInclude Include="Shapes\Transformable.h">
       <Filter>Shapes</Filter>
     </ClInclude>
-    <ClInclude Include="Shapes\Mainfold.h">
-      <Filter>Shapes</Filter>
-    </ClInclude>
     <ClInclude Include="Core\Mesh.h">
       <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Math.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Shapes\Manifold.h">
+      <Filter>Shapes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

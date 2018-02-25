@@ -49,12 +49,14 @@ Mesh::~Mesh() {
   glDeleteVertexArrays(1, &VAOid);
 }
 
-void Mesh::SpecifyVertices(std::vector<float>& data) {
+void Mesh::SpecifyVertices(const std::vector<float>& data) {
   if (bMeshSpecified) {
+    std::cout << "Already specified mesh!" << std::endl;
     return;
   }
   AllocGPU(data);
   numVertices = static_cast<GLsizei>(data.size());
+  std::cout << numVertices << std::endl;
   bMeshSpecified = true;
 }
 
@@ -82,9 +84,9 @@ void Mesh::Render(
   glUniformMatrix4fv(shader.projectionID, 1, GL_FALSE, &projection[0][0]);
   glUniform3fv(shader.colorID, 1, &color[0]);
 
-  // glBindVertexArray(VAOid); // only call if there are multiple VAOs
+  //glBindVertexArray(VAOid); // only call if there are multiple VAOs
 
-  glDrawArrays(GL_TRIANGLES, 0, (GLsizei)numVertices);
+  glDrawArrays(GL_LINES, 0, (GLsizei)numVertices);
 }
 
 void Mesh::AllocGPU(const std::vector<float>& mesh) {
