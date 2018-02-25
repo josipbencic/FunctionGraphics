@@ -11,9 +11,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Controls.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
     <ClCompile Include="Core\Display.cpp">
       <Filter>Core</Filter>
     </ClCompile>
@@ -30,9 +27,6 @@
     <ClInclude Include="Functions.h" />
     <ClInclude Include="Initers.h" />
     <ClInclude Include="Core\Display.h">
-      <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="Controls.h">
       <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="Shaders.h">

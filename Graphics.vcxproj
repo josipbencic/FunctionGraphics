@@ -131,7 +131,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Controls.cpp" />
     <ClCompile Include="Core\Display.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
@@ -144,7 +143,6 @@
   <ItemGroup>
     <ClInclude Include="Body.h" />
     <ClInclude Include="Collision.h" />
-    <ClInclude Include="Controls.h" />
     <ClInclude Include="Core\Display.h" />
     <ClInclude Include="Core\Platform.h" />
     <ClInclude Include="Functions.h" />

@@ -10,7 +10,6 @@
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "Initers.h"
 #include "Mesh.h"
 
 namespace func {

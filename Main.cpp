@@ -17,7 +17,6 @@
 
 #include "./Core/Display.h"
 
-#include "Controls.h"
 #include "Shaders.h"
 #include "Collision.h"
 #include "Body.h"
@@ -70,13 +69,11 @@ int main(int, char**) {
 
   auto m = r.ComputeModelMatrix();
 
-  SDL_Event e;
   do {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    computeMatricesFromInputs(display.Window());
+    display.BeginFrame();
 
-    glm::mat4 view = getViewMatrix();
-    glm::mat4 projection = getProjectionMatrix();
+    glm::mat4 view = display.View();
+    glm::mat4 projection = display.Projection();
 
     floor.Render(programID, view, projection, vector<GLuint>{
       modelMatrixID,
@@ -92,11 +89,7 @@ int main(int, char**) {
       objectColorID
     );
 
-    r.ReactOnInput(e);
-
-    SDL_GL_SwapWindow(display.Window());
-    SDL_PollEvent(&e);
-  } while (e.type != SDL_QUIT && !(e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE ));
+  } while (display.FinishFrame());
 
   Mesh::clearVAO();
   func::PointContainer::clearVAO();
