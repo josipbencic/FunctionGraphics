@@ -14,6 +14,9 @@
     <Filter Include="Math">
       <UniqueIdentifier>{d3f28f5b-0e65-43f3-86e7-1c121c679cad}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{e55128bb-9889-4957-8512-e28b6bba8373}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
@@ -31,14 +34,20 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="SimpleFragmentShader.fragmentshader" />
-    <None Include="SimpleVertexShader.vertexshader" />
-    <None Include="WhiteFragmentShader.fragmentshader" />
-    <None Include="WhiteVertexShader.vertexshader" />
+    <None Include="SimpleFragmentShader.fragmentshader">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="SimpleVertexShader.vertexshader">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="WhiteFragmentShader.fragmentshader">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="WhiteVertexShader.vertexshader">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Body.h" />
-    <ClInclude Include="Functions.h" />
     <ClInclude Include="Core\Display.h">
       <Filter>Core</Filter>
     </ClInclude>
@@ -56,6 +65,9 @@
     </ClInclude>
     <ClInclude Include="Shapes\Manifold.h">
       <Filter>Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\RealFunctions.h">
+      <Filter>Math</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

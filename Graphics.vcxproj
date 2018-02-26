@@ -144,12 +144,11 @@
     <None Include="WhiteVertexShader.vertexshader" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Body.h" />
     <ClInclude Include="Core\Display.h" />
     <ClInclude Include="Core\Mesh.h" />
     <ClInclude Include="Core\Platform.h" />
-    <ClInclude Include="Functions.h" />
     <ClInclude Include="Math\Math.h" />
+    <ClInclude Include="Math\RealFunctions.h" />
     <ClInclude Include="Shapes\Manifold.h" />
     <ClInclude Include="Shapes\Transformable.h" />
   </ItemGroup>

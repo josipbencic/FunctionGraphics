@@ -2,7 +2,6 @@
 
 #if WINDOW_APP > 0
 
-
 #include <iostream>
 #include <cstdlib>
 #include <ostream>
@@ -23,16 +22,12 @@
 #include "./Shapes/Manifold.h"
 #include "./Math/Math.h"
 
-#include "Body.h"
-#include "Functions.h"
-
-
 using namespace std;
 using namespace glm;
 
 void setGLVariables() {
   //  setup opengl
-  glClearColor(0.2f, 0.2f, 0.7f, 0.0f);
+  glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
   glEnable(GL_DEPTH_TEST);
   //glEnable(GL_CULL_FACE);
   //glDepthFunc();
@@ -44,12 +39,14 @@ void setGLVariables() {
 }
 
 int main(int, char**) {
-  Display display("Graphics");
+  Display display("Graphics", 2560, 1600);
 
 
-  Surface<Sphere> S{ Sphere(), vec2(0.0), vec2(2 * 3.1415, 2 * 3.1415) };
+  Surface<Sphere> S{ Sphere(), vec2(-3.1415, - 3.1415), vec2(3.1415, 3.1415) };
   S.Scale(3.0f);
   S.Precompute();
+
+  setGLVariables();
 
   do {
     display.BeginFrame();

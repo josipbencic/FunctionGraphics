@@ -13,7 +13,7 @@
 class Display {
 
   // Initial position : on +Y
-  const glm::vec3 startingPosition = glm::vec3(-10, 5, 0);
+  const glm::vec3 startingPosition = glm::vec3(0, 5, -5);
 
   // Initial Field of View
   static constexpr float initialFoV = 70.0f;

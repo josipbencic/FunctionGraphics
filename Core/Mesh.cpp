@@ -86,7 +86,11 @@ void Mesh::Render(
 
   //glBindVertexArray(VAOid); // only call if there are multiple VAOs
 
-  glDrawArrays(GL_LINES, 0, (GLsizei)numVertices);
+
+  //glEnable(GL_POLYGON_OFFSET_FILL);
+  glPolygonOffset(1.0, 1.0);
+  glDrawArrays(GL_LINE_STRIP, 0, numVertices);
+  //glDisable(GL_POLYGON_OFFSET_FILL);
 }
 
 void Mesh::AllocGPU(const std::vector<float>& mesh) {
