@@ -3,37 +3,56 @@
 
 #include <glm/glm.hpp>
 
-template <class F, class G>
-auto compose(F f, G g) {
-  return [f, g](auto x) { return f(g(x)); };
-}
+namespace mth {
 
-template <class F, class G>
-auto operator *(F f, G g) {
-  return compose(f, g);
-}
+  using R3 = glm::vec3;
+  using R2 = glm::vec2;
+  using R = float;
+  using glm::mat4;
 
-template <class F0, typename... F>
-auto compose(F0 f, F&&... fs) {
-  return f * compose(fs...);
-}
-
-struct Sphere {
-  inline glm::vec3 operator ()(const glm::vec2& x) const {
-    float z = sin(x.y);
-    return glm::vec3(
-      cos(x.x) * z,
-      sin(x.x) * z,
-      cos(x.y)
-    );
+  template <class F, class G>
+  auto compose(F f, G g) {
+    return [f, g](auto x) { return f(g(x)); };
   }
-};
 
-struct Circle {
-  inline glm::vec2 operator ()(float x) const {
-    return glm::vec2( cos(x), sin(x) );
+  template <class F, class G>
+  auto operator *(F f, G g) {
+    return compose(f, g);
   }
-};
 
+  template <class F0, typename... F>
+  auto compose(F0 f, F&&... fs) {
+    return f * compose(fs...);
+  }
+
+  auto graph(const std::function<R(R2)>& f) {
+    return [&f](R2 x) -> R3 {
+      return { x.x, f(x), x.y };
+    };
+  }
+
+  auto graph(const std::function<R(R)>& f) {
+    return [&f](R x) -> R3 {
+      return { x, f(x), x };
+    };
+  }
+
+  struct Sphere {
+    inline R3 operator ()(R2 x) const {
+      float z = sin(x.y);
+      return {
+        cos(x.x) * z,
+        sin(x.x) * z,
+        cos(x.y)
+      };
+    }
+  };
+
+  struct Circle {
+    inline R2 operator ()(R x) const {
+      return { cos(x), sin(x) };
+    }
+  };
+}
 
 #endif

@@ -40,7 +40,7 @@ class Display {
 
 public:
   /*  Initializes SDL and GL. Should be called at the start of the program. */
-  Display(std::string programName, int width = 1920, int height = 1080);
+  Display(std::string programName = std::string("Quick Maths"), int width = 1280, int height = 720);
 
   /*  Deinitalizies SDL and GL. Should be called at the end of the program. */
   ~Display();

@@ -7,16 +7,23 @@
 
 #include <glm/glm.hpp>
 
+struct Colors {
+  static const glm::vec3 BLUE;
+  static const glm::vec3 GREY;
+  static const glm::vec3 PINK;
+  static const glm::vec3 GREEN;
+};
+
+
 /*  Mesh used here is much broader structure than usually in 3D applications.
+    In short, Mesh contains almost all communication done with GL.
     Shader is only used here, so that the code on higher level doesn't need
     to tackle its details. There is only one shader for all meshes.
-    Mesh can contain vertices, color, normals, indices...
-    The whole mesh is inside one VAO.
+    Mesh can contain vertices, color, normals, indices...; everything is inside one VAO.
     This does not scale well, but there will always be less than 3 meshes.
     Mesh is initialized with the data that is sent to GPU.
     Mesh assignement and copying is WEAK.
 
-    In short, Mesh contains almost all communication done with GL.
     It is used as an abstraction for a set of points that are rendered on the screen.
     The color, shading and physics are not important above this level.
 */
@@ -52,7 +59,7 @@ class Mesh
   Shader shader;
 
   /*  ATM, the whole mesh is painted in one color. */
-  const glm::vec3 color = glm::vec3(0.37f, 0.73f, 0.43f);;
+  glm::vec3 color = glm::vec3(0.37f, 0.73f, 0.43f);
 
   /*  Will be turned on when a Mesh is initialized with vertex data. */
   bool bMeshSpecified;
@@ -98,6 +105,11 @@ public:
   */
   void Render(glm::mat4 model, glm::mat4 view, glm::mat4 projection);
 
+  /*  Set mesh color. */
+  inline void Paint(glm::vec3 c) {
+    color = c;
+  }
+
 private:
 
   /*  Allocates a specified vertex set on VBO. */
@@ -105,6 +117,7 @@ private:
 
   /* */
   void copyFrom(const Mesh& src);
+
 };
 
 #endif

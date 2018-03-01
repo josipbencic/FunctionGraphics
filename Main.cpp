@@ -24,34 +24,40 @@
 #include "./Math/Math.h"
 
 using namespace std;
-using namespace glm;
+using namespace mth;
 
-void setGLVariables() {
-  //  setup opengl
-  glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-  glEnable(GL_DEPTH_TEST);
-  //glEnable(GL_CULL_FACE);
-  //glDepthFunc();
-  //glEnable(GL_PROGRAM_POINT_SIZE);
-  //glEnable(GL_BLEND);
-  //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  //glEnable(GL_POINT_SPRITE);
-  //glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
-}
+
 
 int main(int, char**) {
-  Display display("Graphics", 2560, 1600);
+  Display display;
 
+  auto f = [] (R2 x) -> R {
+    return x.x * x.x - x.y * x.y;
+  };
 
-  auto f = [](vec2 a) { return vec3( a.x * a.x, 0, - a.y * a.y); };
+  auto S = Surface<> {
+    graph(f), R2(-1.0, -1.0), R2(1.0, 1.0), Colors::GREY
+  };
 
-  auto S = Surface<function<vec3(vec2)>, 100>( f, vec2(-1.0, -1.0), vec2(1.0, 1.0) );
+  S.Scale(5);
+  S.Translate({ 5.0, 0.0, 0.0 });
 
-  S.Scale(3.0f);
-  S.Translate(vec3(5.0, 0.0, 0.0));
-  S.Precompute();
+  auto rectangle = [] (R2 x) -> R3 {
+    return { x.x, 0.0f, x.y };
+  };
 
-  setGLVariables();
+  auto floor = Surface<>{
+    rectangle, { -5.0, -5.0 }, { 5.0, 5.0 }
+  };
+
+  auto g = [](R x) {
+    return sin(1.0 / x);
+  };
+
+  auto F = Curve<>{
+    graph(g), 0.4f, 100.0f,
+  };
+  F.Scale(2);
 
   do {
     display.BeginFrame();
@@ -59,10 +65,12 @@ int main(int, char**) {
     mat4 view = display.View();
     mat4 projection = display.Projection();
 
+    floor.Render(view, projection);
     S.Render(view, projection);
+    F.Render(view, projection);
 
   } while (display.FinishFrame());
-
   return 0;
 }
+
 #endif

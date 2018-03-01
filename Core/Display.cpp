@@ -60,7 +60,8 @@ void Display::InitSDL(std::string programName, int width, int height) {
 
   mainWindow = SDL_CreateWindow(
     programName.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-    width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+    width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_BORDERLESS
+  );
 
   if (mainWindow == nullptr) {
     KillSDL("Unable to create window");

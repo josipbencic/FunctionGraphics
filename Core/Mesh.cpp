@@ -10,6 +10,11 @@
 #include <SDL.h>
 #include <SDL_opengl.h>
 
+const glm::vec3 Colors::BLUE = glm::vec3(49, 55, 253);
+const glm::vec3 Colors::GREY = glm::vec3(83, 104, 120);
+const glm::vec3 Colors::PINK = glm::vec3(255, 105, 180);
+const glm::vec3 Colors::GREEN = glm::vec3(0.37f, 0.73f, 0.43f);
+
 Mesh::Shader::Shader() {
   id = BuildShaders(Shader::vertexShader, Shader::fragmentShader);
   modelID = glGetUniformLocation(id, "model");
@@ -21,7 +26,6 @@ Mesh::Shader::Shader() {
 Mesh::Shader::~Shader() {
   glDeleteProgram(id);
 }
-
 
 
 Mesh::Mesh() {
@@ -119,13 +123,9 @@ void Mesh::Render(
   glUniformMatrix4fv(shader.projectionID, 1, GL_FALSE, &projection[0][0]);
   glUniform3fv(shader.colorID, 1, &color[0]);
 
-  //glBindVertexArray(VAOid); // only call if there are multiple VAOs
+  glBindVertexArray(VAOid);
 
-
-  //glEnable(GL_POLYGON_OFFSET_FILL);
-  glPolygonOffset(1.0, 1.0);
-  glDrawArrays(GL_LINE_STRIP, 0, numVertices);
-  //glDisable(GL_POLYGON_OFFSET_FILL);
+  glDrawArrays(GL_POINTS, 0, numVertices);
 }
 
 void Mesh::AllocGPU(const std::vector<float>& mesh) {

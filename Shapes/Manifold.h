@@ -6,9 +6,8 @@
 #include "../Core/Mesh.h"
 #include "../Shapes/Transformable.h"
 
-
+#include <functional>
 #include <cmath>
-
 
 
 class Manifold : public Transformable {
@@ -21,12 +20,14 @@ protected:
 
 public:
 
-  inline void Precompute() {
-    mesh.BindRenderAttributes();
-  }
-
   inline void Render(const glm::mat4& view, const glm::mat4 projection) {
     mesh.Render(ComputeModelMatrix(), view, projection);
+  }
+
+private:
+
+  void Precompute() {
+
   }
 };
 
@@ -34,14 +35,28 @@ public:
 /*  Func is a mathematical function from R2 to R3.
     Usually std::function<vec3(vec2)>, but it needn't be.
 */
-template <typename Func, unsigned Resolution = 100>
+template <
+  typename Func = std::function<glm::vec3(glm::vec2)>,
+  unsigned Resolution = 200
+>
 class Surface : public Manifold {
 public:
   Surface(
     const Func& f,
     glm::vec2 from = glm::vec2(0.0f, 0.0f),
-    glm::vec2 to = glm::vec2(1.0f, 1.0f)) {
+    glm::vec2 to = glm::vec2(1.0f, 1.0f),
+    glm::vec3 color = Colors::GREEN
+  ) {
 
+    auto vertices = CreateVertices(f, from, to);
+    mesh.SpecifyVertices(vertices);
+    mesh.Paint(color);
+    mesh.BindRenderAttributes();
+  }
+
+private:
+
+  std::vector<float> CreateVertices(const Func& f, glm::vec2 from, glm::vec2 to) {
     const float res = static_cast<float>(Resolution);
     std::vector<float> v;
 
@@ -61,16 +76,31 @@ public:
       v.push_back(p.y);
       v.push_back(p.z);
     }
-    mesh.SpecifyVertices(v);
+    return v;
   }
 };
 
 
-template <typename Func, unsigned Resolution = 1000>
+template <
+  typename Func = std::function<glm::vec3(float)>,
+  unsigned Resolution = 1000
+>
 class Curve : public Manifold {
 public:
-  Curve(const Func& f, float from = 0.0f, float to = 1.0f) {
+  Curve(
+    const Func& f,
+    float from = 0.0f,
+    float to = 1.0f,
+    glm::vec3 color = Colors::GREY
+  ) {
+    auto vertices = CreateVertices(f, from, to);
+    mesh.SpecifyVertices(vertices);
+    mesh.Paint(color);
+    mesh.BindRenderAttributes();
+  }
 
+private:
+  std::vector<float> CreateVertices(const Func& f, float from = 0.0f, float to = 1.0f) {
     const float res = static_cast<float>(Resolution);
 
     std::vector<float> v;
@@ -81,8 +111,7 @@ public:
       v.push_back(p.y);
       v.push_back(p.z);
     }
-
-    mesh.SpecifyVertices(v);
+    return v;
   }
 };
 
