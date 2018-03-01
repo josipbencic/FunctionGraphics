@@ -31,7 +31,10 @@ public:
 };
 
 
-template <typename Func>
+/*  Func is a mathematical function from R2 to R3.
+    Usually std::function<vec3(vec2)>, but it needn't be.
+*/
+template <typename Func, unsigned Resolution = 100>
 class Surface : public Manifold {
 public:
   Surface(
@@ -39,36 +42,40 @@ public:
     glm::vec2 from = glm::vec2(0.0f, 0.0f),
     glm::vec2 to = glm::vec2(1.0f, 1.0f)) {
 
+    const float res = static_cast<float>(Resolution);
     std::vector<float> v;
-    for (int i = 0; i <= 50; i++) {
-      for (int j = 0; j < 50; j++) {
-        double x = (static_cast<double>(i) / 50.0f) * (to.x - from.x) + from.x;
-        double y = (static_cast<double>(j) / 50.0f) * (to.y - from.y) + from.y;
+
+    for (int i = 0; i <= Resolution; i++) {
+      for (int j = 0; j < Resolution; j++) {
+        double x = (static_cast<double>(i) / res) * (to.x - from.x) + from.x;
+        double y = (static_cast<double>(j) / res) * (to.y - from.y) + from.y;
         glm::vec3 p = f(glm::vec2(x, y));
 
         v.push_back(p.x);
         v.push_back(p.y);
         v.push_back(p.z);
       }
-      double x = (static_cast<double>(i) / 50.0f) * (to.x - from.x) + from.x;
+      double x = (static_cast<double>(i) / res) * (to.x - from.x) + from.x;
       glm::vec3 p = f(glm::vec2(x, to.y));
       v.push_back(p.x);
       v.push_back(p.y);
       v.push_back(p.z);
     }
-    cout << v.back() << " " << v[v.size() - 2] << endl;
     mesh.SpecifyVertices(v);
   }
 };
 
 
-template <typename Func>
+template <typename Func, unsigned Resolution = 1000>
 class Curve : public Manifold {
 public:
-  Curve(const Func& f) {
+  Curve(const Func& f, float from = 0.0f, float to = 1.0f) {
+
+    const float res = static_cast<float>(Resolution);
+
     std::vector<float> v;
-    for (int i = 0; i <= 100; i++) {
-      float x = static_cast<float>(i) / 100.0;
+    for (int i = 0; i <= Resolution; i++) {
+      float x = static_cast<float>(i) / res;
       glm::vec3 p = f(x);
       v.push_back(p.x);
       v.push_back(p.y);

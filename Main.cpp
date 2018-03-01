@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 #include <chrono>
+#include <functional>
 
 #include <GL/glew.h>
 
@@ -42,8 +43,12 @@ int main(int, char**) {
   Display display("Graphics", 2560, 1600);
 
 
-  Surface<Sphere> S{ Sphere(), vec2(-3.1415, - 3.1415), vec2(3.1415, 3.1415) };
+  auto f = [](vec2 a) { return vec3( a.x * a.x, 0, - a.y * a.y); };
+
+  auto S = Surface<function<vec3(vec2)>, 100>( f, vec2(-1.0, -1.0), vec2(1.0, 1.0) );
+
   S.Scale(3.0f);
+  S.Translate(vec3(5.0, 0.0, 0.0));
   S.Precompute();
 
   setGLVariables();

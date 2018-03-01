@@ -5,30 +5,13 @@
 #include <ostream>
 #include <fstream>
 #include <string>
+#include <cstring>
 
 #include <SDL.h>
 #include <SDL_opengl.h>
 
-
-Mesh::Mesh() {
-  glGenVertexArrays(1, &VAOid);
-  glBindVertexArray(VAOid);
-
-  bMeshSpecified = false;
-}
-
-Mesh::Mesh(const std::vector<float>& data) {
-  glGenVertexArrays(1, &VAOid);
-  glBindVertexArray(VAOid);
-
-  AllocGPU(data);
-  numVertices = static_cast<GLsizei>(data.size());
-
-  bMeshSpecified = true;
-}
-
 Mesh::Shader::Shader() {
-  id = LoadShaders(Shader::vertexShader, Shader::fragmentShader);
+  id = BuildShaders(Shader::vertexShader, Shader::fragmentShader);
   modelID = glGetUniformLocation(id, "model");
   viewID = glGetUniformLocation(id, "view");
   projectionID = glGetUniformLocation(id, "projection");
@@ -39,24 +22,76 @@ Mesh::Shader::~Shader() {
   glDeleteProgram(id);
 }
 
+
+
+Mesh::Mesh() {
+  bMeshSpecified = false;
+}
+
+Mesh::Mesh(const std::vector<float>& data) {
+  AllocGPU(data);
+  numVertices = static_cast<GLsizei>(data.size());
+  bMeshSpecified = true;
+}
+
+Mesh::Mesh(const Mesh& src) {
+  if (src.bMeshSpecified) {
+    copyFrom(src);
+  }
+  else {
+    bMeshSpecified = false;
+  }
+}
+
+const Mesh& Mesh::operator =(const Mesh& rhs) {
+  if (this == &rhs) {
+    return *this;
+  }
+
+  if (!rhs.bMeshSpecified) {
+    return *this;
+  }
+
+  copyFrom(rhs);
+  return *this;
+}
+
+Mesh::Mesh(Mesh&& src) {
+  if (src.bMeshSpecified) {
+    copyFrom(src);
+    src.bMeshSpecified = false;
+  }
+  else {
+    bMeshSpecified = false;
+  }
+}
+
+const Mesh& Mesh::operator =(Mesh&& rhs) {
+  if (rhs.bMeshSpecified) {
+    copyFrom(rhs);
+    rhs.bMeshSpecified = false;
+  }
+  return *this;
+}
+
 Mesh::~Mesh() {
   if (bMeshSpecified) {
     glBindVertexArray(VAOid);
     glDeleteBuffers(1, &VBOid);
-  }
 
-  glBindVertexArray(VAOid);
-  glDeleteVertexArrays(1, &VAOid);
+    glBindVertexArray(VAOid);
+    glDeleteVertexArrays(1, &VAOid);
+  }
 }
 
 void Mesh::SpecifyVertices(const std::vector<float>& data) {
   if (bMeshSpecified) {
-    std::cout << "Already specified mesh!" << std::endl;
+    assert(false && "Already specified vertices for this mesh!");
     return;
   }
+
   AllocGPU(data);
   numVertices = static_cast<GLsizei>(data.size());
-  std::cout << numVertices << std::endl;
   bMeshSpecified = true;
 }
 
@@ -94,13 +129,23 @@ void Mesh::Render(
 }
 
 void Mesh::AllocGPU(const std::vector<float>& mesh) {
+  glGenVertexArrays(1, &VAOid);
   glBindVertexArray(VAOid);
+
   glGenBuffers(1, &VBOid);
   glBindBuffer(GL_ARRAY_BUFFER, VBOid);
   glBufferData(GL_ARRAY_BUFFER, mesh.size() * sizeof(float), mesh.data(), GL_STATIC_DRAW);
 }
 
-GLuint Mesh::Shader::LoadShaders(
+void Mesh::copyFrom(const Mesh& src) {
+  VAOid = src.VAOid;
+  VBOid = src.VBOid;
+  numVertices = src.numVertices;
+  shader = src.shader;
+  bMeshSpecified = src.bMeshSpecified;
+}
+
+GLuint Mesh::Shader::BuildShaders(
   const char* vertex_file_path,
   const char* fragment_file_path) {
 

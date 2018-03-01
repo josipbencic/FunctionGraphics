@@ -14,10 +14,11 @@
     The whole mesh is inside one VAO.
     This does not scale well, but there will always be less than 3 meshes.
     Mesh is initialized with the data that is sent to GPU.
+    Mesh assignement and copying is WEAK.
 
     In short, Mesh contains almost all communication done with GL.
-    It is used as an abstraction for a set of points that are rendered
-    on the screen. The color, shading and physics are not important above this level.
+    It is used as an abstraction for a set of points that are rendered on the screen.
+    The color, shading and physics are not important above this level.
 */
 class Mesh
 {
@@ -38,9 +39,11 @@ class Mesh
 
     Shader();
     ~Shader();
+    Shader(const Shader& src) = default;
+    Shader& operator =(const Shader& rhs) = default;
 
     /*  Loads, compiles and links shaders. */
-    GLuint LoadShaders(
+    GLuint BuildShaders(
       const char* vertex_file_path,
       const char* fragment_file_path);
   };
@@ -48,11 +51,11 @@ class Mesh
   /*  The same shader is used for all meshes. */
   Shader shader;
 
-  /*  Currently, the whole mesh is painted in one color. */
+  /*  ATM, the whole mesh is painted in one color. */
   const glm::vec3 color = glm::vec3(0.37f, 0.73f, 0.43f);;
 
-  /*  Will be turned on when a Mesh is initialized with function or explicit vertex data. */
-  bool bMeshSpecified = false;
+  /*  Will be turned on when a Mesh is initialized with vertex data. */
+  bool bMeshSpecified;
 
 public:
   /* Only creates VAO. Vertex buffer still needs to be specifed. */
@@ -63,11 +66,26 @@ public:
 
   ~Mesh();
 
-  /*  There will not be multiple meshes for now. */
-  Mesh(const Mesh&) = delete;
-  Mesh(const Mesh&&) = delete;
-  const Mesh& operator =(const Mesh&) = delete;
-  const Mesh& operator =(const Mesh&&) = delete;
+  /*  Mesh copying is WEAK.
+      New copies only receive a reference to already-existing
+      VAO and VBOs. Other fields are copied by value.
+      If the source has no VAO, nothing happens.
+  */
+  Mesh(const Mesh&);
+
+  /*  WEAK assignment.
+      Assignement from a RHS with no specifed vertices does nothing.
+      Otherwise, references are copied.
+  */
+  const Mesh& operator =(const Mesh&);
+
+  /*  When using move semantics, if there is no vertex data in the
+      source, copying is ignored.
+      Otherwise, ownership of the VAO is translated to
+      this, while the source is flagged as if it doesn't have specified mesh.
+  */
+  Mesh(Mesh&&);
+  const Mesh& operator =(Mesh&&);
 
   /*  Used to specify data if it wasn't originially supplied. */
   void SpecifyVertices(const std::vector<float>& data);
@@ -75,54 +93,18 @@ public:
   /*  Sets VAO attributes before render. */
   void BindRenderAttributes();
 
-  /*  Sends uniforms and makes a draw call. */
+  /*  Sends uniforms and makes a draw call.
+      Assumes the mesh vertices have been setup.
+  */
   void Render(glm::mat4 model, glm::mat4 view, glm::mat4 projection);
 
 private:
 
   /*  Allocates a specified vertex set on VBO. */
   void AllocGPU(const std::vector<float>& mesh);
-};
 
-inline std::vector<float> CubePoints() {
-  return std::vector<float>{
-     -0.5f, -0.5f, -0.5f,
-     0.5f, -0.5f, -0.5f,
-     0.5f, 0.5f, -0.5f,
-     0.5f, 0.5f, -0.5f,
-     -0.5f, 0.5f, -0.5f,
-     -0.5f, -0.5f, -0.5f,
-     -0.5f, -0.5f, 0.5f,
-     0.5f, -0.5f, 0.5f,
-     0.5f, 0.5f, 0.5f,
-     0.5f, 0.5f, 0.5f,
-     -0.5f, 0.5f, 0.5f,
-     -0.5f, -0.5f, 0.5f,
-     -0.5f, 0.5f, 0.5f,
-     -0.5f, 0.5f, -0.5f,
-     -0.5f, -0.5f, -0.5f,
-     -0.5f, -0.5f, -0.5f,
-     -0.5f, -0.5f, 0.5f,
-     -0.5f, 0.5f, 0.5f,
-     0.5f, 0.5f, 0.5f,
-     0.5f, 0.5f, -0.5f,
-     0.5f, -0.5f, -0.5f,
-     0.5f, -0.5f, -0.5f,
-     0.5f, -0.5f, 0.5f,
-     0.5f, 0.5f, 0.5f,
-     -0.5f, -0.5f, -0.5f,
-     0.5f, -0.5f, -0.5f,
-     0.5f, -0.5f, 0.5f,
-     0.5f, -0.5f, 0.5f,
-     -0.5f, -0.5f, 0.5f,
-     -0.5f, -0.5f, -0.5f,
-     -0.5f, 0.5f, -0.5f,
-     0.5f, 0.5f, -0.5f,
-     0.5f, 0.5f, 0.5f,
-     0.5f, 0.5f, 0.5f,
-     -0.5f, 0.5f, 0.5f,
-     -0.5f, 0.5f, -0.5f,
-  };
-}
+  /* */
+  void copyFrom(const Mesh& src);
+};
 
 #endif
