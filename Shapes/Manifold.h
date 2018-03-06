@@ -10,25 +10,21 @@
 #include <cmath>
 
 
+
+/*  A base class for all shapes. Contains all information needed
+    to make a draw call. Classes that inherit from Manifold need
+    only to handle mathematics.
+*/
 class Manifold : public Transformable {
+
+  friend class Display;
+
 protected:
 
   Mesh mesh;
 
   Manifold() = default;
   Manifold(const Manifold&) = default;
-
-public:
-
-  inline void Render(const glm::mat4& view, const glm::mat4 projection) {
-    mesh.Render(ComputeModelMatrix(), view, projection);
-  }
-
-private:
-
-  void Precompute() {
-
-  }
 };
 
 

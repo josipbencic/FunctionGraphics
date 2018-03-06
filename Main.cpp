@@ -27,7 +27,6 @@ using namespace std;
 using namespace mth;
 
 
-
 int main(int, char**) {
   Display display;
 
@@ -61,15 +60,9 @@ int main(int, char**) {
 
   do {
     display.BeginFrame();
-
-    mat4 view = display.View();
-    mat4 projection = display.Projection();
-
-    floor.Render(view, projection);
-    S.Render(view, projection);
-    F.Render(view, projection);
-
+    display << floor << S << F;
   } while (display.FinishFrame());
+
   return 0;
 }
 

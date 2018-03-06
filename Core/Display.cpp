@@ -9,6 +9,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+#include "../Shapes/Manifold.h"
+
 
 Display::Display(std::string programName, int width, int height) {
   InitSDL(programName, width, height);
@@ -176,5 +178,11 @@ void Display::UpdateMovement(float deltaTime) {
     position + direction,   // and looks here : at the same position, plus "direction"
     up                      // Head is up (set to 0,-1,0 to look upside-down)
   );
+}
+
+const Display& Display::operator<<(const Manifold& m) const {
+
+  m.mesh.Render(m.ComputeModelMatrix(), view, projection);
+  return *this;
 }
 

@@ -103,7 +103,10 @@ public:
   /*  Sends uniforms and makes a draw call.
       Assumes the mesh vertices have been setup.
   */
-  void Render(glm::mat4 model, glm::mat4 view, glm::mat4 projection);
+  void Render(
+    const glm::mat4& model,
+    const glm::mat4& view,
+    const glm::mat4& projection) const;
 
   /*  Set mesh color. */
   inline void Paint(glm::vec3 c) {

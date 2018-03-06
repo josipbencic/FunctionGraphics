@@ -115,12 +115,12 @@ void Mesh::BindRenderAttributes() {
 }
 
 void Mesh::Render(
-  glm::mat4 model, glm::mat4 view, glm::mat4 projection) {
+  const glm::mat4& M, const glm::mat4& V, const glm::mat4& P) const {
 
   glUseProgram(shader.id);
-  glUniformMatrix4fv(shader.modelID, 1, GL_FALSE, &model[0][0]);
-  glUniformMatrix4fv(shader.viewID, 1, GL_FALSE, &view[0][0]);
-  glUniformMatrix4fv(shader.projectionID, 1, GL_FALSE, &projection[0][0]);
+  glUniformMatrix4fv(shader.modelID, 1, GL_FALSE, &M[0][0]);
+  glUniformMatrix4fv(shader.viewID, 1, GL_FALSE, &V[0][0]);
+  glUniformMatrix4fv(shader.projectionID, 1, GL_FALSE, &P[0][0]);
   glUniform3fv(shader.colorID, 1, &color[0]);
 
   glBindVertexArray(VAOid);

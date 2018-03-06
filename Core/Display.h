@@ -10,6 +10,13 @@
 
 #include <glm/glm.hpp>
 
+
+class Manifold;
+
+
+/*  Class that handles all communication with SDL and makes all
+    the draw calls.
+*/
 class Display {
 
   // Initial position : on +Y
@@ -45,8 +52,13 @@ public:
   /*  Deinitalizies SDL and GL. Should be called at the end of the program. */
   ~Display();
 
+  /*  React to input, compute movement and similar. */
   void BeginFrame();
 
+  /*  Draw call. Can be chained to draw multiple manifolds. */
+  const Display& operator <<(const Manifold& m) const;
+
+  /*  Check for app exit, poll events and similar. */
   bool FinishFrame();
 
 private:
