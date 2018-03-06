@@ -2,6 +2,10 @@
 
 #if WINDOW_APP > 0
 
+#include <GL/glew.h>
+
+#include <SDL.h>
+
 #include <iostream>
 #include <cstdlib>
 #include <ostream>
@@ -10,30 +14,41 @@
 #include <vector>
 #include <chrono>
 #include <functional>
-
-#include <GL/glew.h>
-
-#include <SDL.h>
-
-#include <glm/glm.hpp>
-#include <glm/mat4x4.hpp>
-#include <glm/gtc/matrix_transform.hpp>
+#include <iomanip>
+using namespace std;
 
 #include "./Core/Display.h"
 #include "./Shapes/Manifold.h"
 #include "./Math/Math.h"
 
-using namespace std;
 using namespace mth;
 
+//
+//int main(int, char**) {
+//
+//  glm::mat4 L = { { 1, 0, 0, 0 },{ 0, 1, 0, 0 },{ 1 / 4.0, -1 / 16.0, 0, 0},{ -3 / 4.0, -1 / 16.0, -1 / 81.0, 0 } };
+//  glm::mat4 R = { { 12, -18, 0, -12 },{ 0, -8, -19, -2 },{ 0, 0, 243.0 / 16, 105.0 / 8 },{ 0,0,0, -328.0 / 108 } };
+//  auto a = L * R;
+//  cout << std::setprecision(5) << std::fixed << std::showpos;
+//  for (int i = 0; i < 16; i++) {
+//    cout << a[i / 4][i % 4] << " ";
+//    if (i % 4 == 3) cout << endl;
+//  }
+//
+//
+//  getchar();
+//  return 0;
+//}
 
 int main(int, char**) {
   Display display;
+
 
   auto f = [] (R2 x) -> R {
     return x.x * x.x - x.y * x.y;
   };
 
+  
   auto S = Surface<> {
     graph(f), R2(-1.0, -1.0), R2(1.0, 1.0), Colors::GREY
   };
@@ -45,25 +60,26 @@ int main(int, char**) {
     return { x.x, 0.0f, x.y };
   };
 
+  auto sphere = [](R2 x) -> R3 {
+    return { x.x * cosf(x.y), x.x * sinf(x.y), sqrt(1 - x.x*x.x) } ;
+  };
+
+  auto body = [](R2 x) -> R3 {
+    return { x.x, x.y, sqrt(x.x*x.x + x.y*x.y) };
+  };
+
   auto floor = Surface<>{
     rectangle, { -5.0, -5.0 }, { 5.0, 5.0 }
   };
 
-  auto g = [](R x) {
-    return sin(1.0 / x);
+  auto S1 = Surface<>{
+    sphere, { 0.0, 4.0 }, {}
   };
-
-  auto F = Curve<>{
-    graph(g), 0.4f, 100.0f,
-  };
-  F.Scale(2);
 
   do {
     display.BeginFrame();
-    display << floor << S << F;
+    display << floor << S;
   } while (display.FinishFrame());
-
   return 0;
 }
-
 #endif

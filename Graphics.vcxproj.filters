@@ -14,7 +14,7 @@
     <Filter Include="Math">
       <UniqueIdentifier>{d3f28f5b-0e65-43f3-86e7-1c121c679cad}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Shaders">
+    <Filter Include="Core\Shaders">
       <UniqueIdentifier>{e55128bb-9889-4957-8512-e28b6bba8373}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -32,20 +32,6 @@
     <ClCompile Include="Math\MathPlayground.cpp">
       <Filter>Math</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="SimpleFragmentShader.fragmentshader">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="SimpleVertexShader.vertexshader">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="WhiteFragmentShader.fragmentshader">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="WhiteVertexShader.vertexshader">
-      <Filter>Shaders</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Display.h">
@@ -69,5 +55,11 @@
     <ClInclude Include="Math\RealFunctions.h">
       <Filter>Math</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Core\Shaders\SimpleFragmentShader.fragmentshader" />
+    <None Include="Core\Shaders\SimpleVertexShader.vertexshader" />
+    <None Include="Core\Shaders\WhiteFragmentShader.fragmentshader" />
+    <None Include="Core\Shaders\WhiteVertexShader.vertexshader" />
   </ItemGroup>
 </Project>

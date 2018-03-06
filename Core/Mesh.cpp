@@ -16,7 +16,7 @@ const glm::vec3 Colors::PINK = glm::vec3(255, 105, 180);
 const glm::vec3 Colors::GREEN = glm::vec3(0.37f, 0.73f, 0.43f);
 
 Mesh::Shader::Shader() {
-  id = BuildShaders(Shader::vertexShader, Shader::fragmentShader);
+  id = BuildShaders(Shader::vertexShaderPath, Shader::fragmentShaderPath);
   modelID = glGetUniformLocation(id, "model");
   viewID = glGetUniformLocation(id, "view");
   projectionID = glGetUniformLocation(id, "projection");

@@ -138,12 +138,6 @@
     <ClCompile Include="Shapes\Manifold.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="SimpleFragmentShader.fragmentshader" />
-    <None Include="SimpleVertexShader.vertexshader" />
-    <None Include="WhiteFragmentShader.fragmentshader" />
-    <None Include="WhiteVertexShader.vertexshader" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="Core\Display.h" />
     <ClInclude Include="Core\Mesh.h" />
     <ClInclude Include="Core\Platform.h" />
@@ -151,6 +145,12 @@
     <ClInclude Include="Math\RealFunctions.h" />
     <ClInclude Include="Shapes\Manifold.h" />
     <ClInclude Include="Shapes\Transformable.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Core\Shaders\SimpleFragmentShader.fragmentshader" />
+    <None Include="Core\Shaders\SimpleVertexShader.vertexshader" />
+    <None Include="Core\Shaders\WhiteFragmentShader.fragmentshader" />
+    <None Include="Core\Shaders\WhiteVertexShader.vertexshader" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
