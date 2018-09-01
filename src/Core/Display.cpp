@@ -1,11 +1,12 @@
 #include "Display.h"
 
-
 #include "Platform.h"
 
 #include <iostream>
 #include <cstdlib>
 
+#include <GL/glew.h>
+#include <GL/GL.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -22,9 +23,7 @@ Display::~Display() {
   QuitSDL();
 }
 
-
 void Display::BeginFrame() {
-
   //  Clear the screen
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 

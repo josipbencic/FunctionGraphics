@@ -7,6 +7,7 @@
 #include <string>
 #include <cstring>
 
+#include <GL/glew.h>
 #include <SDL.h>
 #include <SDL_opengl.h>
 
@@ -26,7 +27,6 @@ Mesh::Shader::Shader() {
 Mesh::Shader::~Shader() {
   glDeleteProgram(id);
 }
-
 
 Mesh::Mesh() {
   bMeshSpecified = false;

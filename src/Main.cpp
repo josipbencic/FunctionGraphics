@@ -9,8 +9,7 @@
 #include <iomanip>
 using namespace std;
 
-#include <glm/glm.hpp>
-
+/*
 int main(int, char**) {
 
  glm::mat4 L = { { 1, 0, 0, 0 },{ 0, 1, 0, 0 },{ 1 / 4.0, -1 / 16.0, 0, 0},{ -3 / 4.0, -1 / 16.0, -1 / 81.0, 0 } };
@@ -22,34 +21,40 @@ int main(int, char**) {
    if (i % 4 == 3) cout << endl;
  }
 
-
  getchar();
  return 0;
 }
+*/
 
-/*
-int main(int, char**) {
+#include "Core/Platform.h"
+#include "Core/Display.h"
+#include "Core/Mesh.h"
+#include "Math/Math.h"
+#include "Math/RealFunctions.h"
+#include "Shapes/Manifold.h"
+using namespace mth;
+
+int main() {
   Display display;
 
-
-  auto f = [] (R2 x) -> R {
+  auto f = [](R2 x) -> R {
     return x.x * x.x - x.y * x.y;
   };
 
-  
-  auto S = Surface<> {
+
+  auto S = Surface<>{
     graph(f), R2(-1.0, -1.0), R2(1.0, 1.0), Colors::GREY
   };
 
   S.Scale(5);
   S.Translate({ 5.0, 0.0, 0.0 });
 
-  auto rectangle = [] (R2 x) -> R3 {
+  auto rectangle = [](R2 x) -> R3 {
     return { x.x, 0.0f, x.y };
   };
 
   auto sphere = [](R2 x) -> R3 {
-    return { x.x * cosf(x.y), x.x * sinf(x.y), sqrt(1 - x.x*x.x) } ;
+    return { x.x * cosf(x.y), x.x * sinf(x.y), sqrt(1 - x.x*x.x) };
   };
 
   auto body = [](R2 x) -> R3 {
@@ -69,5 +74,5 @@ int main(int, char**) {
     display << floor << S;
   } while (display.FinishFrame());
   return 0;
+
 }
-*/

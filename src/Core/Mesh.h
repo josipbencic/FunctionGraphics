@@ -35,8 +35,8 @@ class Mesh
   GLsizei numVertices;
 
   struct Shader {
-    static constexpr char* vertexShaderPath = "./Core/Shaders/SimpleVertexShader.vertexshader";
-    static constexpr char* fragmentShaderPath = "./Core/Shaders/SimpleFragmentShader.fragmentshader";
+    static constexpr char* vertexShaderPath = "shaders/SimpleVertexShader.vertexshader";
+    static constexpr char* fragmentShaderPath = "shaders/SimpleFragmentShader.fragmentshader";
 
     GLuint id;
     GLuint modelID;

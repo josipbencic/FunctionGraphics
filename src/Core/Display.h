@@ -1,6 +1,8 @@
 #ifndef INCLUDED_DISPLAY_H
 #define INCLUDED_DISPLAY_H
 
+#define SDL_MAIN_HANDLED
+
 #include <string>
 
 #include <GL/glew.h>
